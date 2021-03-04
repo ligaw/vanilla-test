@@ -2,7 +2,10 @@
 
 namespace Tests\Feature;
 
+use App\Models\User;
+use App\Models\Widget;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class ListWidgetsTest extends TestCase
@@ -16,13 +19,18 @@ class ListWidgetsTest extends TestCase
      */
     public function test_widget_list_is_json()
     {
+        Sanctum::actingAs(
+            User::factory()->create(),
+            ['*']
+        );
+
         $widget = Widget::factory()->create([
             'name' => 'Test Widget'
         ]);
 
-        $response = $this->get('/');
+        $response = $this->get('/api/widgets');
 
         $response->assertOk();
-        $response->assertJson(['name' => $widget->name]);
+        $response->assertJson([['name' => $widget->name]]);
     }
 }
