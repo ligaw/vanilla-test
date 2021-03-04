@@ -19,5 +19,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 */
 //Route::get('/shop/{id}', [ShopController::class, 'show']);
+Route::middleware('auth:sanctum')->apiResource('widgets', WidgetController::class);
 
-Route::apiResource('widgets', WidgetController::class);

@@ -2,8 +2,10 @@
 
 namespace Tests\Unit;
 
+use App\Models\User;
 use App\Models\Widget;
 use Illuminate\Foundation\Testing\WithFaker;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class WidgetAvailableViaHttpVerbsTest extends TestCase
@@ -14,12 +16,14 @@ class WidgetAvailableViaHttpVerbsTest extends TestCase
     {
         parent::setUp();
 
-
+        Sanctum::actingAs(
+            User::factory()->create(),
+            ['*']
+        );
     }
 
     public function test_resource_available_via_get()
     {
-
         Widget::factory()->create([
             'name' => 'Test Widget',
             'description' => 'Test Description'
